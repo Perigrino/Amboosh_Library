@@ -13,8 +13,8 @@ public class BookService
     {
         _context = context;
     }
-
-    public void AddBook(BookVM book)
+    
+    public void AddBook(BookVM book) //Adds a book to db
     {
         var _book = new Book()
         {
@@ -32,19 +32,19 @@ public class BookService
         _context.SaveChanges();
     }
 
-    public List<Book> GetAllBooks()
+    public List<Book> GetAllBooks() //Gets a list of all book
     {
         var allBooks = _context.Books.ToList();
         return allBooks;
     }
 
-    public Book GetBookById(int bookId)
+    public Book GetBookById(int bookId) //Gets book by Id
     {
         var bookById = _context.Books.FirstOrDefault(n =>n.Id == bookId);
         return bookById;
     }
 
-    public Book UpdateBookById(int bookId, BookVM book)
+    public Book UpdateBookById(int bookId, BookVM book) //Update a book 
     {
         var _book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
         if (_book != null)
@@ -64,7 +64,7 @@ public class BookService
         return _book;
     }
 
-    public void DeleteById(int bookId)
+    public void DeleteById(int bookId) //Deletes a book by Id
     {
         var _book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
         if (_book != null)
@@ -74,8 +74,8 @@ public class BookService
         }
     }
     
-    public bool BookExists(int id)
-    {
-        return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
-    }
+    // public bool BookExists(int id)
+    // {
+    //     return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
+    // }
 }

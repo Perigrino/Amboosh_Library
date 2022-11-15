@@ -12,6 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddTransient<BookService>();
+builder.Services.AddTransient<PublisherService>();
+builder.Services.AddTransient<AuthorService>();
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); //to revert to the pre-6.0 behavior, add the following at the start of your application, before any Npgsql operations are invoked
 
 

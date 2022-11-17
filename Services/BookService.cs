@@ -14,7 +14,7 @@ public class BookService
         _context = context;
     }
     
-    public void AddBook(BookVM book) //Adds a book to db
+    public void AddBookWithAuthors(BookVM book) //Adds a book to db
     {
         var _book = new Book()
         {
@@ -24,12 +24,23 @@ public class BookService
             DateRead = book.IsRead? book.DateRead.Value: null,
             Rate = book.IsRead? book.Rate.Value: null,
             Genre = book.Genre,
-            Author = book.Author,
             CoverURL = book.CoverURL,
-            DateAdded = DateTime.Now
+            DateAdded = DateTime.Now,
+            PublisherId = book.PublisherId
         };
         _context.Books.Add(_book);
         _context.SaveChanges();
+
+        foreach (var id in book.AuthorId)
+        {
+            var _book_author = new BookAuthor()
+            {
+                BookId = _book.Id,
+                AuthorId = id
+            };
+            _context.Book_Authors.Add(_book_author);
+            _context.SaveChanges();
+        }
     }
 
     public List<Book> GetAllBooks() //Gets a list of all book
@@ -55,7 +66,6 @@ public class BookService
             _book.DateRead = book.IsRead ? book.DateRead.Value : null;
             _book.Rate = book.IsRead ? book.Rate.Value : null;
             _book.Genre = book.Genre;
-            _book.Author = book.Author;
             _book.CoverURL = book.CoverURL;
             
             _context.SaveChanges();
@@ -73,9 +83,4 @@ public class BookService
             _context.SaveChanges();
         }
     }
-    
-    // public bool BookExists(int id)
-    // {
-    //     return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
-    // }
 }

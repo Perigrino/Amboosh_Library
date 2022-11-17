@@ -47,10 +47,6 @@ namespace Amboosh_Library.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("CoverURL")
                         .IsRequired()
                         .HasColumnType("text");

@@ -12,8 +12,7 @@ public class AuthorController : Controller
     {
         _authorService = authorService;
     }
-       
-   // GET: api/Authors
+    // GET: api/Authors
    [HttpGet("get_all_authors")]
    public IActionResult GetAuthors()
    {

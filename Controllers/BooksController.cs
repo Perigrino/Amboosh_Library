@@ -61,10 +61,10 @@ namespace Amboosh_Library.Controllers
         }
 
         // POST: api/Books
-        [HttpPost("add_book")]
+        [HttpPost("add_book_with_authors")]
         public IActionResult PostBook ([FromBody]BookVM book)
         {
-            _bookService.AddBook(book);
+            _bookService.AddBookWithAuthors(book);
             return Ok();
         }
 

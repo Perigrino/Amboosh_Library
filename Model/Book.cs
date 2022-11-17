@@ -9,12 +9,11 @@ public class Book
     public DateTime? DateRead { get; set; }
     public int? Rate { get; set; }
     public string Genre { get; set; }
-    public string Author { get; set; }
     public string CoverURL { get; set; }
     public DateTime DateAdded { get; set; }
     
     //Navigation Prop
     public int PublisherId { get; set; }
     public Publisher Publisher { get; set; }
-    public List<Book_Author> BookAuthors { get; set; }
+    public List<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
 }

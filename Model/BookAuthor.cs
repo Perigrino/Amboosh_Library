@@ -1,6 +1,6 @@
 namespace Amboosh_Library.Model;
 
-public class Book_Author
+public class BookAuthor
 {
     public int Id { get; set; }
     

@@ -6,5 +6,5 @@ public class Author
     public string FullName { get; set; }
     
     //Navigation Prop
-    public List<BookAuthor> BookAuthors { get; set; }
+    public List<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
 }

@@ -51,35 +51,35 @@ public class BookService
 
     public Book GetBookById(int bookId) //Gets book by Id
     {
-        var bookById = _context.Books.FirstOrDefault(n =>n.Id == bookId);
-        return bookById;
+        var book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
+        return book;
     }
 
-    public Book UpdateBookById(int bookId, BookVM book) //Update a book 
+    public Book UpdateBookById(int bookId, BookVM bookObj) //Update a book 
     {
-        var _book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
-        if (_book != null)
+        var book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
+        if (book != null)
         {
-            _book.Title = book.Title;
-            _book.Description = book.Description;
-            _book.IsRead = book.IsRead;
-            _book.DateRead = book.IsRead ? book.DateRead.Value : null;
-            _book.Rate = book.IsRead ? book.Rate.Value : null;
-            _book.Genre = book.Genre;
-            _book.CoverURL = book.CoverURL;
+            book.Title = bookObj.Title;
+            book.Description = bookObj.Description;
+            book.IsRead = bookObj.IsRead;
+            book.DateRead = bookObj.IsRead ? bookObj.DateRead.Value : null;
+            book.Rate = bookObj.IsRead ? bookObj.Rate.Value : null;
+            book.Genre = bookObj.Genre;
+            book.CoverURL = bookObj.CoverURL;
             
             _context.SaveChanges();
         }
 
-        return _book;
+        return book;
     }
 
     public void DeleteById(int bookId) //Deletes a book by Id
     {
-        var _book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
-        if (_book != null)
+        var book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
+        if (book != null)
         {
-            _context.Books.Remove(_book);
+            _context.Books.Remove(book);
             _context.SaveChanges();
         }
     }

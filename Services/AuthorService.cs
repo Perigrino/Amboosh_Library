@@ -13,47 +13,47 @@ public class AuthorService
         _context = context;
     }
     
-    public void AddAuthor(AuthorVM author) //Adds a Author to db
+    public void AddAuthor(AuthorVM authorObj) //Adds a Author to db
     {
-        var _author = new Author()
+        var author = new Author()
         {
-            FullName = author.FullName
+            FullName = authorObj.FullName
         };
-        _context.Authors.Add(_author);
+        _context.Authors.Add(author);
         _context.SaveChanges();
     }
     
     public List<Author> GetAllAuthors() //Gets a list of all authors
     {
-        var allAuthors = _context.Authors.ToList();
-        return allAuthors;
+        var authors = _context.Authors.ToList();
+        return authors;
     }
     
     public Author GetAuthorById(int authorId) //Gets Author by Id
     {
-        var authorById = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
-        return authorById;
+        var author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
+        return author;
     }
     
-    public Author UpdateAuthorById(int authorId, AuthorVM author) //Update a Author 
+    public Author UpdateAuthorById(int authorId, AuthorVM authorObj) //Update a Author 
     {
-        var _author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
-        if (_author != null)
+        var author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
+        if (author != null)
         {
-            _author.FullName = author.FullName;
+            author.FullName = authorObj.FullName;
             
             _context.SaveChanges();
         }
 
-        return _author;
+        return author;
     }
     
     public void DeleteById(int authorId) //Deletes a Author by Id
     {
-        var _author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
-        if (_author != null)
+        var author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
+        if (author != null)
         {
-            _context.Authors.Remove(_author);
+            _context.Authors.Remove(author);
             _context.SaveChanges();
         }
     }

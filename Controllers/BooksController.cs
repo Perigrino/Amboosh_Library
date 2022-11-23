@@ -24,15 +24,15 @@ namespace Amboosh_Library.Controllers
         }
 
         // GET: api/Books
-        [HttpGet("get_all_books")]
+        [HttpGet()]
         public IActionResult GetBooks()
         {
-            var allBooks = _bookService.GetAllBooks();
-            if (allBooks == null)
+            var books = _bookService.GetAllBooks();
+            if (books == null)
             {
                 return NotFound();
             }
-            return Ok(allBooks);
+            return Ok(books);
 
         }
 
@@ -53,15 +53,15 @@ namespace Amboosh_Library.Controllers
         }
  
         // // PUT: api/Books/
-        [HttpPut("update_book/{id}")]
-        public IActionResult PutBook(int id, [FromBody]BookVM book)
+        [HttpPut("{bookId}")]
+        public IActionResult PutBook(int bookId, [FromBody]BookVM book)
         {
-            var updatedBook = _bookService.UpdateBookById(id, book);
+            var updatedBook = _bookService.UpdateBookById(bookId, book);
             return Ok(updatedBook);
         }
 
         // POST: api/Books
-        [HttpPost("add_book_with_authors")]
+        [HttpPost()]
         public IActionResult PostBook ([FromBody]BookVM book)
         {
             _bookService.AddBookWithAuthors(book);
@@ -69,10 +69,10 @@ namespace Amboosh_Library.Controllers
         }
 
     // DELETE: api/Books/5
-    [HttpDelete("{id}")]
-    public IActionResult DeleteBook(int id)
+    [HttpDelete("{bookId}")]
+    public IActionResult DeleteBook(int bookId)
     {
-        _bookService.DeleteById(id);
+        _bookService.DeleteById(bookId);
         return Ok();
     }
     

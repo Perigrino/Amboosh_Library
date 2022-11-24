@@ -14,39 +14,39 @@ public class BookService
         _context = context;
     }
     
-    public void AddBookWithAuthors(BookVM book) //Adds a book to db
+    public async Task AddBookWithAuthors(BookVM bookObj) //Adds a book to db
     {
-        var _book = new Book()
+        var book = new Book()
         {
-            Title = book.Title,
-            Description = book.Description,
-            IsRead = book.IsRead,
-            DateRead = book.IsRead? book.DateRead.Value: null,
-            Rate = book.IsRead? book.Rate.Value: null,
-            Genre = book.Genre,
-            CoverURL = book.CoverURL,
+            Title = bookObj.Title,
+            Description = bookObj.Description,
+            IsRead = bookObj.IsRead,
+            DateRead = bookObj.IsRead? bookObj.DateRead.Value: null,
+            Rate = bookObj.IsRead? bookObj.Rate.Value: null,
+            Genre = bookObj.Genre,
+            CoverURL = bookObj.CoverURL,
             DateAdded = DateTime.Now,
-            PublisherId = book.PublisherId
+            PublisherId = bookObj.PublisherId
         };
-        _context.Books.Add(_book);
+        _context.Books.Add(book);
         _context.SaveChanges();
 
-        foreach (var id in book.AuthorId)
+        foreach (var id in bookObj.AuthorId)
         {
-            var _book_author = new BookAuthor()
+            var book_author = new BookAuthor()
             {
-                BookId = _book.Id,
+                BookId = book.Id,
                 AuthorId = id
             };
-            _context.Book_Authors.Add(_book_author);
+            _context.Book_Authors.Add(book_author);
             _context.SaveChanges();
         }
     }
 
     public List<Book> GetAllBooks() //Gets a list of all book
     {
-        var allBooks = _context.Books.ToList();
-        return allBooks;
+        var books = _context.Books.ToList();
+        return books;
     }
 
     public Book GetBookById(int bookId) //Gets book by Id

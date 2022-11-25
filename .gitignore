@@ -360,6 +360,7 @@ autom4te.cache/
 *.tar.gz
 tarballs/
 test-results/
+bin/
 
 # Mac bundle stuff
 *.dmg

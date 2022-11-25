@@ -28,23 +28,32 @@ public class PublisherService
         return publishers;
     }
 
-    public Publisher GetPublisherById(int publisherId) //Gets Publisher by Id
+    public PublisherWithBooksAndAuthors GetPublisherById(int publisherId) //Gets Publisher by Id
     {
-        var publisher = _context.Publishers.FirstOrDefault(n => n.Id == publisherId);
+        var publisher = _context.Publishers.Where(n => n.Id == publisherId)
+            .Select(n => new PublisherWithBooksAndAuthors()
+            {
+                Name = n.Name,
+                BookAndAuthorsVM = n.Books.Select(n => new BookAndAuthorsVM()
+                {
+                    BookName = n.Title,
+                    AuthorNames = n.BookAuthors.Select(n => n.Author.FullName).ToList()
+                }).ToList()
+            }).FirstOrDefault();
         return publisher;
     }
 
-    public Publisher UpdatePublisherById(int publisherId, PublisherVM publisherObj) //Update a Publisher 
-    {
-        var publisher = _context.Publishers.FirstOrDefault(n => n.Id == publisherId);
-        if (publisher != null)
-        {
-            publisher.Name = publisherObj.Name;
-
-            _context.SaveChanges();
-        }
-        return publisher;
-    }
+    // public Publisher UpdatePublisherById(int publisherId, PublisherVM publisherObj) //Update a Publisher 
+    // {
+    //     var publisher = _context.Publishers.FirstOrDefault(n => n.Id == publisherId);
+    //     if (publisher != null)
+    //     {
+    //         publisher.Name = publisherObj.Name;
+    //
+    //         _context.SaveChanges();
+    //     }
+    //     return publisher;
+    // }
 
     public void DeleteById(int publishId) //Deletes a Publisher by Id
     {

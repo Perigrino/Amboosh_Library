@@ -25,13 +25,13 @@ namespace Amboosh_Library.Controllers
 
         }
         
-        // GET: api/Authors/5
-        // [HttpGet("{authorId}")]
-        // public IActionResult GetAuthorById(int authorId)
-        // {
-        //     var author = _authorService.GetAuthorById(authorId);
-        //     return Ok(author);
-        // }
+        //GET: api/Authors/5
+        [HttpGet("{authorId}")]
+        public IActionResult GetAuthorById(int authorId)
+        {
+            var author = _authorService.GetAuthorById(authorId);
+            return Ok(author);
+        }
 
         // PUT: api/Authors/
         // [HttpPut("{authorId}")]

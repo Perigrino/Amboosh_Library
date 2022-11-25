@@ -27,12 +27,12 @@ namespace Amboosh_Library.Controllers
         }
 
         // GET: api/Publisher/5
-        // [HttpGet("{publisherId}")]
-        // public IActionResult GetPublisherById(int publisherId)
-        // {
-        //     var publisher = _publisherService.GetPublisherById(publisherId);
-        //     return Ok(publisher);
-        // }
+        [HttpGet("{publisherId}")]
+        public IActionResult GetPublisherById(int publisherId)
+        {
+            var publisher = _publisherService.GetPublisherById(publisherId);
+            return Ok(publisher);
+        }
 
         // // PUT: api/Publisher/
         // [HttpPut("{publisherId}")]

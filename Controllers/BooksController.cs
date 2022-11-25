@@ -40,11 +40,11 @@ namespace Amboosh_Library.Controllers
         [HttpGet("{bookId}")]
         public IActionResult GetBookById(int bookId)
         {
-          if (_bookService.GetBookById(bookId) == null)
+          if (_bookService.GetBookByWithAuthors(bookId) == null)
           {
               return NotFound();
           }
-          var book = _bookService.GetBookById(bookId);
+          var book = _bookService.GetBookByWithAuthors(bookId);
           if (book == null)
           {
                 return NotFound();

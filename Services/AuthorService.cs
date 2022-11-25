@@ -11,7 +11,7 @@ public class AuthorService
     public AuthorService(AppDbContext context)
     {
         _context = context;
-    }
+    } 
     
     public void AddAuthor(AuthorVM authorObj) //Adds a Author to db
     {
@@ -29,24 +29,30 @@ public class AuthorService
         return authors;
     }
     
-    public Author GetAuthorById(int authorId) //Gets Author by Id
+    public AuthorWithListOfBooksVM GetAuthorById(int authorId) //Gets Author by Id
     {
-        var author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
+        var author = _context.Authors.Where(n => n.Id == authorId)
+            .Select(f => new AuthorWithListOfBooksVM()
+        {
+            FullName = f.FullName,
+            BookTitles = f.BookAuthors.Select(bt => bt.Book.Title).ToList()
+        }).FirstOrDefault();
+        
         return author;
     }
     
-    public Author UpdateAuthorById(int authorId, AuthorVM authorObj) //Update a Author 
-    {
-        var author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
-        if (author != null)
-        {
-            author.FullName = authorObj.FullName;
-            
-            _context.SaveChanges();
-        }
-
-        return author;
-    }
+    // public Author UpdateAuthorById(int authorId, AuthorVM authorObj) //Update a Author 
+    // {
+    //     var author = _context.Authors.FirstOrDefault(n =>n.Id == authorId);
+    //     if (author != null)
+    //     {
+    //         author.FullName = authorObj.FullName;
+    //         
+    //         _context.SaveChanges();
+    //     }
+    //
+    //     return author;
+    // }
     
     public void DeleteById(int authorId) //Deletes a Author by Id
     {

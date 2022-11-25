@@ -49,9 +49,21 @@ public class BookService
         return books;
     }
 
-    public Book GetBookById(int bookId) //Gets book by Id
+    public BookWithAuthorsVM GetBookByWithAuthors(int bookId) //Gets book by Id
     {
-        var book = _context.Books.FirstOrDefault(n =>n.Id == bookId);
+        var book = _context.Books.Where(n => n.Id == bookId).Select(book => new BookWithAuthorsVM()
+        {
+            Title = book.Title,
+            Description = book.Description,
+            IsRead = book.IsRead,
+            DateRead = book.IsRead ? book.DateRead.Value : null,
+            Rate = book.IsRead ? book.Rate.Value : null,
+            Genre = book.Genre,
+            CoverURL = book.CoverURL,
+            PublisherName = book.Publisher.Name,
+            AuthorNames = book.BookAuthors.Select(n => n.Author.FullName).ToList()
+        }).FirstOrDefault();
+        
         return book;
     }
 

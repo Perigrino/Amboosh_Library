@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Amboosh_Library.Data;
+using Amboosh_Library.Data.Paging;
 using Amboosh_Library.Exceptions;
 using Amboosh_Library.Model;
 using Amboosh_Library.ViewModels;
@@ -27,7 +28,7 @@ public class PublisherService
         return publisher;
     }
 
-    public List<Publisher> GetAllPublisher(string sortBy, string searchString) //Gets a list of all Publisher
+    public List<Publisher> GetAllPublisher(string sortBy, string searchString, int? pageNumber) //Gets a list of all Publisher
     {
         var publishers = _context.Publishers.OrderBy(n => n.Name).ToList();
         if (!string.IsNullOrEmpty(sortBy))
@@ -38,11 +39,16 @@ public class PublisherService
                     break;
             }
         }
-
         if (!string.IsNullOrEmpty(searchString))
         {
-            var publisher = _context.Publishers.Where(n => n.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            var publisher = publishers.Where(n => n.Name
+                .Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
         }
+
+        //Paging
+        int pageSize = 5;
+        publishers = PaginatedList<Publisher>.Create(publishers.AsQueryable(), pageNumber ?? 1, pageSize);
+        
         return publishers;
     }
 

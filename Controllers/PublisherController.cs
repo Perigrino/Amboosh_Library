@@ -20,11 +20,11 @@ namespace Amboosh_Library.Controllers
 
         // GET: api/Publisher
         [HttpGet()]
-        public IActionResult GetPublishers(string sortBy, string searchString)
+        public IActionResult GetPublishers(string sortBy, string searchString, int pageNumber)
         {
             try
             {
-                var publishers = _publisherService.GetAllPublisher(sortBy, searchString);
+                var publishers = _publisherService.GetAllPublisher(sortBy, searchString, pageNumber);
                 return Ok(publishers);
             }
             catch (Exception e)
@@ -63,7 +63,6 @@ namespace Amboosh_Library.Controllers
         public IActionResult PostPublisher([FromBody] PublisherVM publisherObj)
         {
             var publisher = _publisherService.AddPublisher(publisherObj);
-            throw new Exception();
             return Ok(publisher);
         }
 

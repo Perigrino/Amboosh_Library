@@ -18,9 +18,9 @@ namespace Amboosh_Library.Controllers
 
         // GET: api/Authors
         [HttpGet()]
-        public IActionResult GetAuthors()
+        public IActionResult GetAuthors(string sortBy, string searchString, int? pageSize)
         {
-            var authors = _authorService.GetAllAuthors();
+            var authors = _authorService.GetAllAuthors(sortBy, searchString, pageSize);
             return Ok(authors);
 
         }

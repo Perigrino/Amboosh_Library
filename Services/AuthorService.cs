@@ -1,4 +1,5 @@
 using Amboosh_Library.Data;
+using Amboosh_Library.Data.Paging;
 using Amboosh_Library.Model;
 using Amboosh_Library.ViewModels;
 
@@ -23,9 +24,26 @@ public class AuthorService
         _context.SaveChanges();
     }
     
-    public List<Author> GetAllAuthors() //Gets a list of all authors
+    public List<Author> GetAllAuthors(string sortBy, string searchString, int? pageNumber) //Gets a list of all authors
     {
-        var authors = _context.Authors.ToList();
+        var authors = _context.Authors.OrderBy(n => n.FullName).ToList();
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            switch (sortBy)
+            {
+                case "desc": authors = _context.Authors.OrderByDescending(n => n.FullName).ToList();
+                    break;
+            }
+        }
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            var author = authors
+                .Where(n => n.FullName.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+        }
+        //Paging
+        int pageSize = 5;
+        authors = PaginatedList<Author>.Create(authors.AsQueryable(), pageNumber ?? 1, pageSize);
+
         return authors;
     }
     

@@ -25,9 +25,9 @@ namespace Amboosh_Library.Controllers
 
         // GET: api/Books
         [HttpGet()]
-        public IActionResult GetBooks()
+        public IActionResult GetBooks(string sortBy, string searchString, int pageNumber)
         {
-            var books = _bookService.GetAllBooks();
+            var books = _bookService.GetAllBooks(sortBy, searchString, pageNumber);
             if (books == null)
             {
                 return NotFound();

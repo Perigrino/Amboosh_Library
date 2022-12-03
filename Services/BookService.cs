@@ -1,4 +1,5 @@
 using Amboosh_Library.Data;
+using Amboosh_Library.Data.Paging;
 using Amboosh_Library.Model;
 using Amboosh_Library.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -43,9 +44,26 @@ public class BookService
         }
     }
 
-    public List<Book> GetAllBooks() //Gets a list of all book
+    public List<Book> GetAllBooks(string sortBy, string searchString, int? pageNumber) //Gets a list of all book
     {
-        var books = _context.Books.ToList();
+        var books = _context.Books.OrderBy(n => n.Title).ToList();
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            switch (sortBy)
+            {
+                case "name_desc": books = _context.Books.OrderByDescending(n => n.Title).ToList();
+                    break;
+            }
+        }
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            var book = books.Where(n => n.Title.Contains(searchString, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+        }
+        
+        //Paging
+        int pageSize = 5;
+        books = PaginatedList<Book>.Create(books.AsQueryable(), pageNumber ?? 1, pageSize);
         return books;
     }
 

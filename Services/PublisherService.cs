@@ -87,6 +87,4 @@ public class PublisherService
         }
     }
 
-    private bool StringStartsWithANumberStyles(string name) => (Regex.IsMatch(name, @"^\d"));
-
 }

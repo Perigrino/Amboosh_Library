@@ -1,4 +1,7 @@
+using System.Globalization;
+using System.Text.RegularExpressions;
 using Amboosh_Library.Data;
+using Amboosh_Library.Exceptions;
 using Amboosh_Library.Model;
 using Amboosh_Library.ViewModels;
 
@@ -12,7 +15,7 @@ public class PublisherService
         _context = context;
     }
 
-    public void AddPublisher(PublisherVM publisherObj) //Adds a Publisher to db
+    public Publisher AddPublisher(PublisherVM publisherObj) //Adds a Publisher to db
     {
         var publisher = new Publisher()
         {
@@ -20,11 +23,26 @@ public class PublisherService
         };
         _context.Publishers.Add(publisher);
         _context.SaveChanges();
+
+        return publisher;
     }
 
-    public List<Publisher> GetAllPublisher() //Gets a list of all Publisher
+    public List<Publisher> GetAllPublisher(string sortBy, string searchString) //Gets a list of all Publisher
     {
-        var publishers = _context.Publishers.ToList();
+        var publishers = _context.Publishers.OrderBy(n => n.Name).ToList();
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            switch (sortBy)
+            {
+                case "name_desc": publishers = _context.Publishers.OrderByDescending(n => n.Name).ToList();
+                    break;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            var publisher = _context.Publishers.Where(n => n.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+        }
         return publishers;
     }
 
@@ -63,5 +81,12 @@ public class PublisherService
             _context.Publishers.Remove(publisher);
             _context.SaveChanges();
         }
+        else
+        {
+            throw new Exception($"The publisher ID: {publishId} does not exist");
+        }
     }
+
+    private bool StringStartsWithANumberStyles(string name) => (Regex.IsMatch(name, @"^\d"));
+
 }

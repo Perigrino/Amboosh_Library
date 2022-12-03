@@ -54,10 +54,11 @@ namespace Amboosh_Library.Controllers
  
         // // PUT: api/Books/
         [HttpPut("{bookId}")]
-        public IActionResult PutBook(int bookId, [FromBody]BookVM book)
+        public IActionResult PutBook(int bookId, [FromBody]BookVM bookObj)
         {
-            var updatedBook = _bookService.UpdateBookById(bookId, book);
-            return Ok(updatedBook);
+            var book = _bookService.UpdateBookById(bookId, bookObj);
+            throw new Exception();
+            return Ok(book);
         }
 
         // POST: api/Books

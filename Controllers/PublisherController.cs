@@ -1,4 +1,5 @@
 using Amboosh_Library.Data;
+using Amboosh_Library.Exceptions;
 using Amboosh_Library.Model;
 using Amboosh_Library.Services;
 using Amboosh_Library.ViewModels;
@@ -19,10 +20,17 @@ namespace Amboosh_Library.Controllers
 
         // GET: api/Publisher
         [HttpGet()]
-        public IActionResult GetPublishers()
+        public IActionResult GetPublishers(string sortBy, string searchString)
         {
-            var allpublishers = _publisherService.GetAllPublisher();
-            return Ok(allpublishers);
+            try
+            {
+                var publishers = _publisherService.GetAllPublisher(sortBy, searchString);
+                return Ok(publishers);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Could not load your list of publishers");
+            }
 
         }
 
@@ -31,7 +39,15 @@ namespace Amboosh_Library.Controllers
         public IActionResult GetPublisherById(int publisherId)
         {
             var publisher = _publisherService.GetPublisherById(publisherId);
-            return Ok(publisher);
+            if (publisher != null)
+            {
+                return Ok(publisher);
+            }
+            else
+            {
+                return NotFound(); 
+            }
+                
         }
 
         // // PUT: api/Publisher/
@@ -44,18 +60,27 @@ namespace Amboosh_Library.Controllers
 
         // POST: api/Publisher
         [HttpPost()]
-        public IActionResult PostPublisher([FromBody] PublisherVM publisher)
+        public IActionResult PostPublisher([FromBody] PublisherVM publisherObj)
         {
-            _publisherService.AddPublisher(publisher);
-            return Ok();
+            var publisher = _publisherService.AddPublisher(publisherObj);
+            throw new Exception();
+            return Ok(publisher);
         }
 
         // DELETE: api/Publisher/5
         [HttpDelete("{publisherId}")]
-        public IActionResult DeletePublisher(int id)
+        public IActionResult DeletePublisher(int publisherId)
         {
-            _publisherService.DeleteById(id);
-            return Ok("Publisher has been deleted successfully");
+            try
+            {
+                _publisherService.DeleteById(publisherId);
+                return Ok("Publisher has been deleted successfully");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
         }
     }
 }

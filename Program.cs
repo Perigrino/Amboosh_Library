@@ -1,4 +1,5 @@
 using Amboosh_Library.Data;
+using Amboosh_Library.Exceptions;
 using Amboosh_Library.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.ConfigureBuilderExpcetionHandler();
 
 app.MapControllers();
 

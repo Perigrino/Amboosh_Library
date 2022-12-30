@@ -1,6 +1,4 @@
-using Amboosh_Library.Data;
-using Amboosh_Library.Exceptions;
-using Amboosh_Library.Model;
+
 using Amboosh_Library.Services;
 using Amboosh_Library.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +25,9 @@ namespace Amboosh_Library.Controllers
                 var publishers = _publisherService.GetAllPublisher(sortBy, searchString, pageNumber);
                 return Ok(publishers);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest("Could not load your list of publishers");
+                throw new Exception("Something went wrong whiles fetching all your publishers");
             }
 
         }
@@ -43,11 +41,9 @@ namespace Amboosh_Library.Controllers
             {
                 return Ok(publisher);
             }
-            else
-            {
-                return NotFound(); 
-            }
-                
+
+            throw new Exception($"Something went wrong whiles fetching publisher with ID {publisherId}");
+
         }
 
         // // PUT: api/Publisher/
@@ -62,8 +58,15 @@ namespace Amboosh_Library.Controllers
         [HttpPost()]
         public IActionResult PostPublisher([FromBody] PublisherVM publisherObj)
         {
-            var publisher = _publisherService.AddPublisher(publisherObj);
-            return Ok(publisher);
+            try
+            {
+                var publisher = _publisherService.AddPublisher(publisherObj);
+                return Ok(publisher);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Something went wrong whiles creating your new publisher");
+            }
         }
 
         // DELETE: api/Publisher/5
@@ -75,9 +78,9 @@ namespace Amboosh_Library.Controllers
                 _publisherService.DeleteById(publisherId);
                 return Ok("Publisher has been deleted successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                throw new Exception("Something went wrong whiles deleting your publisher");
             }
             
         }

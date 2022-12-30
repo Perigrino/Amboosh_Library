@@ -9,6 +9,7 @@ using Amboosh_Library.Data;
 using Amboosh_Library.Model;
 using Amboosh_Library.Services;
 using Amboosh_Library.ViewModels;
+using Exception = System.Exception;
 
 namespace Amboosh_Library.Controllers
 {
@@ -30,7 +31,7 @@ namespace Amboosh_Library.Controllers
             var books = _bookService.GetAllBooks(sortBy, searchString, pageNumber);
             if (books == null)
             {
-                return NotFound();
+                throw new Exception("Something went wrong whiles fetching all your books");
             }
             return Ok(books);
 
@@ -47,7 +48,7 @@ namespace Amboosh_Library.Controllers
           var book = _bookService.GetBookByWithAuthors(bookId);
           if (book == null)
           {
-                return NotFound();
+              throw new Exception("Something went wrong whiles fetching all your books");
           } 
           return Ok(book);
         }
@@ -57,7 +58,10 @@ namespace Amboosh_Library.Controllers
         public IActionResult PutBook(int bookId, [FromBody]BookVM bookObj)
         {
             var book = _bookService.UpdateBookById(bookId, bookObj);
-            throw new Exception();
+            if (book == null)
+            {
+                throw new Exception("Something went wrong whiles fetching all your books");
+            } 
             return Ok(book);
         }
 
@@ -65,16 +69,30 @@ namespace Amboosh_Library.Controllers
         [HttpPost()]
         public IActionResult PostBook ([FromBody]BookVM book)
         {
-            _bookService.AddBookWithAuthors(book);
-            return Ok();
+            try
+            {
+                _bookService.AddBookWithAuthors(book);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Something went wrong whiles creating your new book");
+            }
         }
 
     // DELETE: api/Books/5
     [HttpDelete("{bookId}")]
     public IActionResult DeleteBook(int bookId)
     {
-        _bookService.DeleteById(bookId);
-        return Ok();
+        try
+        {
+            _bookService.DeleteById(bookId);
+            return Ok("This book has been deleted successfully.");
+        }
+        catch (Exception)
+        {
+            throw new Exception($"Something went wrong whiles deleting your book with ID {bookId}");
+        }
     }
     
 

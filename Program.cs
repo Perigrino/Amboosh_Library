@@ -21,6 +21,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); //to revert 
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
